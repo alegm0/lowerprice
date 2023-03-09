@@ -24,7 +24,7 @@ Route::group(['prefix' => '/auth'], function ($router) {
 
     Route::group(['prefix' => '/product'], function($router) {
         Route::post('/', [\App\Http\Controllers\Api\ProductController::class, 'store']);
-        Route::get('/list', [\App\Http\Controllers\Api\ProductController::class, 'getList']);
+        Route::get('/list/{userId}', [\App\Http\Controllers\Api\ProductController::class, 'getList']);
         Route::get('/{id}', [\App\Http\Controllers\Api\ProductController::class, 'index']);
         Route::put('/update/{id}', [\App\Http\Controllers\Api\ProductController::class, 'update']);
         Route::delete('/delete/{id}', [\App\Http\Controllers\Api\ProductController::class, 'delete']);
@@ -35,5 +35,33 @@ Route::group(['prefix' => '/auth'], function ($router) {
         Route::get('/{id}', [\App\Http\Controllers\Api\ShoppingListController::class, 'index']);
         Route::put('/{id}', [\App\Http\Controllers\Api\ShoppingListController::class, 'update']);
         Route::delete('/{id}', [\App\Http\Controllers\Api\ShoppingListController::class, 'delete']);
+    });
+
+    Route::group(['prefix' => '/address'], function($router) {
+        Route::post('/', [\App\Http\Controllers\AddressController::class, 'store']);
+        Route::get('/{userId}', [\App\Http\Controllers\AddressController::class, 'findByUser']);
+        Route::put('/{id}', [\App\Http\Controllers\AddressController::class, 'update']);
+        Route::delete('/{id}', [\App\Http\Controllers\AddressController::class, 'delete']);
+    });
+
+    Route::group(['prefix' => '/utils'], function($router) {
+        Route::get('/document-type', [\App\Http\Controllers\DocumentTypeController::class, 'find']);
+        Route::get('/departments', [\App\Http\Controllers\DepartmentsController::class, 'find']);
+        Route::get('/countries', [\App\Http\Controllers\CountriesController::class, 'find']);
+        Route::get('/cities', [\App\Http\Controllers\CitiesController::class, 'find']);
+    });
+
+    Route::group(['prefix' => '/discounts'], function($router) {
+        Route::post('/', [\App\Http\Controllers\DiscountsController::class, 'store']);
+        Route::get('/{userId}', [\App\Http\Controllers\DiscountsController::class, 'findByProduct']);
+        Route::put('/{id}', [\App\Http\Controllers\DiscountsController::class, 'update']);
+        Route::delete('/{id}', [\App\Http\Controllers\DiscountsController::class, 'delete']);
+    });
+
+    Route::group(['prefix' => '/category'], function($router) {
+        Route::post('/', [\App\Http\Controllers\CategoryController::class, 'store']);
+        Route::get('/{userId}', [\App\Http\Controllers\CategoryController::class, 'findByUser']);
+        Route::put('/{id}', [\App\Http\Controllers\CategoryController::class, 'update']);
+        Route::delete('/{id}', [\App\Http\Controllers\CategoryController::class, 'delete']);
     });
 });

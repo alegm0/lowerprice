@@ -15,5 +15,20 @@ class Product extends Model
      *
      * @var array
      */
-    protected $fillable = ['name_mark', 'price', 'quantity', 'description'];
+    protected $fillable = ['name', 'unit_cost', 'quantity', 'description', 'category_id', 'user_id'];
+
+    public function Discounts()
+    {
+        return $this->belongsTo(Discounts::class);
+    }
+
+    public function Category()
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    public function user()
+    {
+        return $this->hasMany(User::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ShoppingList;
+use Illuminate\Support\Facades\Validator;
 
 class ShoppingListController extends Controller
 {
@@ -86,7 +87,7 @@ class ShoppingListController extends Controller
             if ($validateData->fails()) {
                 return response()->json($validateData->errors(), 403);
             }
-            ShoppingList::where('id', '=', $id)->update($request->all());
+            ShoppingList::findOrFail($id)->update($request->all());
             $shoppingListUpdate = ShoppingList::findOrFail($id);
             return response()->json(['message' => 'Success operation', 'data' => $shoppingListUpdate], 201);
         } catch (\Exception $e) {

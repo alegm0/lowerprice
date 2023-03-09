@@ -19,10 +19,12 @@ class ProductController extends Controller
     {
         try{
             $validateData = Validator::make($request->all(), [
-                'name_mark' => 'required|string',
-                'price' => 'required',
+                'name' => 'required|string',
+                'unit_cost' => 'required',
                 'quantity' => 'required|integer',
-                'description' => 'nullable'
+                'description' => 'nullable',
+                'category_id' => 'required|integer|exists:categories,id',
+                'user_id' => 'required|integer|exists:users,id',
             ]);
             if($validateData->fails()){
                 return response()->json($validateData->errors(), 403);
@@ -54,10 +56,13 @@ class ProductController extends Controller
         }
     }
 
-    public function getList()
+    public function getList(int $userId)
     {
         try {
-            $list = Product::all();
+            if (!isset($userId)) {
+                return response()->json('Send the parameter', 403);
+            }
+            $list = Product::where('user_id', $userId)->get();
             return response()->json(['message' => 'Success operation', 'data' => $list], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
@@ -68,15 +73,17 @@ class ProductController extends Controller
     {
         try {
             $validateData = Validator::make($request->all(), [
-                'name_mark' => 'required|string',
-                'price' => 'required',
+                'name' => 'required|string',
+                'unit_cost' => 'required',
                 'quantity' => 'required|integer',
-                'description' => 'nullable'
+                'description' => 'nullable',
+                'category_id' => 'required|integer|exists:categories,id',
+                'user_id' => 'required|integer|exists:users,id',
             ]);
             if ($validateData->fails()) {
                 return response()->json($validateData->errors(), 403);
             }
-            Product::where('id', $id)->update($request->all());
+            Product::findOrFail($id)->update($request->all());
             $productUpdate = Product::findOrFail($id);
             return response()->json(['message' => 'Success operation', 'data' => $productUpdate], 201);
         } catch (\Exception $e) {
