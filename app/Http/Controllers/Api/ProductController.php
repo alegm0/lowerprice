@@ -56,13 +56,10 @@ class ProductController extends Controller
         }
     }
 
-    public function getList(int $userId)
+    public function getList()
     {
         try {
-            if (!isset($userId)) {
-                return response()->json('Send the parameter', 403);
-            }
-            $list = Product::where('user_id', $userId)->get();
+            $list = Product::get();
             return response()->json(['message' => 'Success operation', 'data' => $list], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);

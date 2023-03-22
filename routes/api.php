@@ -24,7 +24,7 @@ Route::group(['prefix' => '/auth'], function ($router) {
 
     Route::group(['prefix' => '/product'], function($router) {
         Route::post('/', [\App\Http\Controllers\Api\ProductController::class, 'store']);
-        Route::get('/list/{userId}', [\App\Http\Controllers\Api\ProductController::class, 'getList']);
+        Route::get('/list', [\App\Http\Controllers\Api\ProductController::class, 'getList']);
         Route::get('/{id}', [\App\Http\Controllers\Api\ProductController::class, 'index']);
         Route::put('/update/{id}', [\App\Http\Controllers\Api\ProductController::class, 'update']);
         Route::delete('/delete/{id}', [\App\Http\Controllers\Api\ProductController::class, 'delete']);
@@ -63,5 +63,12 @@ Route::group(['prefix' => '/auth'], function ($router) {
         Route::get('/{userId}', [\App\Http\Controllers\CategoryController::class, 'findByUser']);
         Route::put('/{id}', [\App\Http\Controllers\CategoryController::class, 'update']);
         Route::delete('/{id}', [\App\Http\Controllers\CategoryController::class, 'delete']);
+    });
+
+    Route::group(['prefix' => '/mark'], function($router) {
+        Route::post('/', [\App\Http\Controllers\Api\MarkController::class, 'store']);
+        Route::get('/', [\App\Http\Controllers\Api\MarkController::class, 'getList']);
+        Route::put('/{id}', [\App\Http\Controllers\Api\MarkController::class, 'update']);
+        Route::delete('/{id}', [\App\Http\Controllers\Api\MarkController::class, 'delete']);
     });
 });

@@ -11,10 +11,10 @@ class MarkController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        // $this->middleware('auth:api');
     }
 
-    public function newMark(Request $request)
+    public function store(Request $request)
     {
         try {
             $validateData = Validator::make($request->all(),[
@@ -38,16 +38,10 @@ class MarkController extends Controller
         }
     }
 
-    public function getListMark(int $userId)
+    public function getList()
     {
         try {
-            $validateData = Validator::make(['user_id' => $userId], [
-                'user_id' => 'required|integer|exists:users,id'
-            ]);
-            if ($validateData->fails()) {
-                return response()->json($validateData->errors(), 403);
-            }
-            $list = Mark::where('user_id', '=', $userId)->get();
+            $list = Mark::get();
             return response()->json(['message' => 'Success operation', 'data' => $list], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
@@ -70,7 +64,7 @@ class MarkController extends Controller
         }
     }
 
-    public function editMark(Request $request, $id)
+    public function update(Request $request, $id)
     {
         try {
             $validateData = Validator::make($request->all(), [
@@ -89,7 +83,7 @@ class MarkController extends Controller
         }
     }
 
-    public function deleteMark(int $id)
+    public function delete(int $id)
     {
         try {
             $validateData = Validator::make(['id' => $id], [

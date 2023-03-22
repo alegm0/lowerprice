@@ -44,7 +44,7 @@ class AuthController extends Controller
         try {
             $validateData = Validator::make($request->all(), [
                 'name'     => 'required|string',
-                'lastname' => 'required|string',
+                'document_number' => 'required',
                 'email'    => 'required|email',
                 'password' => 'required|string'
             ]);
@@ -83,12 +83,12 @@ class AuthController extends Controller
             $createToken->token = Crypt::encryptString($user->id);
             $createToken->save();
             Mail::to($email)->send(new MailPasswordReset(['name'=> $user->name, 'token' => $createToken->token]));
-            return response()->json(['message' => 'email send'], 200);  
+            return response()->json(['message' => 'email send'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
         }
     }
-    
+
     public function savePasswordReset(Request $request)
     {
         try {
