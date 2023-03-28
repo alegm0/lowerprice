@@ -2,19 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements JWTSubject
+class Companies extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
-    // Rest omitted for brevity
+    use HasFactory;
 
-    protected $table = 'users';
+    protected $table = 'companies';
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
@@ -36,19 +32,32 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array
      */
     protected $fillable = [
         'name',
-        'last_name',
-        'document_type_id',
+        'document_number',
         'phone',
-        'gender_id',
         'email',
         'password',
-        'document_number'
+        'website',
+        'size_company',
+        'is_active',
+        'address_description',
+        'city_id',
+        'country_id',
+        'department_id'
     ];
 
     /**
@@ -60,23 +69,4 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'remember_token',
     ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    public function address()
-    {
-        return $this->belongsTo(Address::class);
-    }
-
-    public function gender()
-    {
-        return $this->hasMany(Gender::class);
-    }
 }

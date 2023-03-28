@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Mail\PasswordReset as MailPasswordReset;
+use App\Models\Companies;
 use App\Models\PasswordReset;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,7 +22,11 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'resetPassword', 'savePasswordReset', 'product']]);
+        $this->middleware('auth:api',
+            ['except' =>
+                ['login', 'register', 'resetPassword', 'savePasswordReset', 'product']
+            ]
+        );
     }
 
     public function login(Request $request)
@@ -46,23 +51,39 @@ class AuthController extends Controller
                 'name'     => 'required|string',
                 'document_number' => 'required',
                 'email'    => 'required|email',
-                'password' => 'required|string'
+                'password' => 'required|string',
+                'role'     => 'required'
             ]);
             if ($validateData->fails()) {
                 return response()->json($validateData->errors(), 403);
             }
             $keys = array_keys($request->all());
-            $newUser = new User();
-            foreach ($keys as $key => $value) {
-                if($value == 'password'){
-                    $newUser->$value = Hash::make($request[$value]);
-                    continue;
+            if ($request->all()['role'] == 1) { //In case the user
+                unset($keys[4]);
+                $newUser = new User();
+                foreach ($keys as $value) {
+                    if($value == 'password'){
+                        $newUser->$value = Hash::make($request[$value]);
+                        continue;
+                    }
+                    $newUser->$value = $request[$value];
                 }
-                $newUser->$value = $request[$value];
+                $newUser->save();
+                return response()->json(['message' => 'Success operation', 'data' => $newUser], 201);
+            } else {
+                unset($keys[4]);
+                $newCompany = new Companies();
+                foreach ($keys as $value) {
+                    if($value == 'password'){
+                        $newCompany->$value = Hash::make($request[$value]);
+                        continue;
+                    }
+                    $newCompany->$value = $request[$value];
+                }
+                $newCompany->save();
+                return response()->json(['message' => 'Success operation', 'data' => $newCompany], 201);
             }
-            $newUser->save();
-            return response()->json(
-                ['message' => 'Success operation', 'data' => $newUser], 201);
+
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
         }
