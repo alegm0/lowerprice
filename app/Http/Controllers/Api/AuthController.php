@@ -92,18 +92,19 @@ class AuthController extends Controller
     public function resetPassword(string $email)
     {
         try {
-            $validateData = Validator::make(['email' => $email], [
-                'email' => 'required|email|exists:users,email'
-            ]);
-            if ($validateData->fails()) {
-                return response()->json($validateData->errors(), 403);
+            $user = User::select('id','name')->where('email', $email)->first();
+            $company = Companies::select('id','name')->where('email', $email)->first();
+            if ($company == null && $user == null) {
+                return response()->json(["email" => [ "The selected email is invalid."]], 403);
             }
-            $user = User::select('id','name')->where('email', '=', $email)->first();
             $createToken = new PasswordReset();
             $createToken->email = $email;
-            $createToken->token = Crypt::encryptString($user->id);
+            $createToken->token = isset($user) ? Crypt::encryptString($user->id) : Crypt::encryptString($company->id);
             $createToken->save();
-            Mail::to($email)->send(new MailPasswordReset(['name'=> $user->name, 'token' => $createToken->token]));
+            Mail::to($email)->send(new MailPasswordReset([
+                'name' => isset($user) ? $user->name : $company->name,
+                'token' => $createToken->token
+            ]));
             return response()->json(['message' => 'email send'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
@@ -120,8 +121,8 @@ class AuthController extends Controller
             if ($validateData->fails()) {
                 return response()->json($validateData->errors(), 403);
             }
-            $infoUser = PasswordReset::where('token', '=', $request->token)->first();
-            User::where('email', '=', $infoUser->email)->update(['password' => Hash::make($request->password)]);
+            $infoUser = PasswordReset::where('token', $request->token)->first();
+            User::where('email', $infoUser->email)->update(['password' => Hash::make($request->password)]);
             return response()->json(['message' => 'Update password'], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
