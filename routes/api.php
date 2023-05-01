@@ -74,4 +74,11 @@ Route::group(['prefix' => '/auth'], function ($router) {
         Route::put('/{userId}', [\App\Http\Controllers\DiscountPromotionsController::class, 'update']);
         Route::delete('/delete/{id}', [\App\Http\Controllers\DiscountPromotionsController::class, 'delete']);
     });
+
+    Route::group(['prefix' => '/comments'], function($router) {
+        Route::post('/', [\App\Http\Controllers\CommentsController::class, 'store']);
+        Route::get('/all/{productId}', [\App\Http\Controllers\CommentsController::class, 'getAllByProduct']);
+        Route::put('/{userId}', [\App\Http\Controllers\CommentsController::class, 'update']);
+        Route::delete('/delete/{id}', [\App\Http\Controllers\CommentsController::class, 'delete']);
+    });
 });
