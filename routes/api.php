@@ -61,4 +61,17 @@ Route::group(['prefix' => '/auth'], function ($router) {
             Route::delete('/delete', [\App\Http\Controllers\AddressController::class, 'delete']);
         });
     });
+
+    Route::group(['prefix' => '/complaints'], function($router) {
+        Route::post('/', [\App\Http\Controllers\ComplaintsController::class, 'store']);
+        Route::get('/{userId}', [\App\Http\Controllers\ComplaintsController::class, 'storByUser']);
+        Route::delete('/delete/{id}', [\App\Http\Controllers\ComplaintsController::class, 'delete']);
+    });
+
+    Route::group(['prefix' => '/discount-promotions'], function($router) {
+        Route::post('/', [\App\Http\Controllers\DiscountPromotionsController::class, 'store']);
+        Route::get('/', [\App\Http\Controllers\DiscountPromotionsController::class, 'getAll']);
+        Route::put('/{userId}', [\App\Http\Controllers\DiscountPromotionsController::class, 'update']);
+        Route::delete('/delete/{id}', [\App\Http\Controllers\DiscountPromotionsController::class, 'delete']);
+    });
 });
