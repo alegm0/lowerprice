@@ -22,5 +22,10 @@ class Countries extends Model
     {
         return $this->belongsTo(Departments::class);
     }
+
+    public function address()
+    {
+        return $this->hasMany(Address::class);
+    }
 }
 

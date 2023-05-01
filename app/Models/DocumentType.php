@@ -17,4 +17,9 @@ class DocumentType extends Model
      * @var array
      */
     protected $fillable = ['description', 'name'];
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

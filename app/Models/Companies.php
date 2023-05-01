@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Companies extends Model
 {
@@ -37,6 +38,18 @@ class Companies extends Model
      * @var array
      */
     protected $casts = [
+        'name' => 'string',
+        'document_number' => 'integer',
+        'phone' => 'integer',
+        'email' => 'string',
+        'password' => 'string',
+        'website' => 'string',
+        'size_company' => 'string',
+        'is_active' => 'bool',
+        'address_description' => 'string',
+        'city_id' => 'integer',
+        'country_id' => 'integer',
+        'department_id' => 'integer',
         'email_verified_at' => 'datetime',
     ];
 
@@ -69,4 +82,9 @@ class Companies extends Model
         'password',
         'remember_token',
     ];
+
+    public function paymentMethods(): BelongsToMany
+    {
+        return $this->belongsToMany(PaymentMethod::class, 'companies_payment_methods', 'company_id', 'payment_method_id');
+    }
 }

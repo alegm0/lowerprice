@@ -14,7 +14,6 @@ class CreateCompaniesPaymentMethodsTable extends Migration
     public function up()
     {
         Schema::create('companies_payment_methods', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('payment_method_id');
             $table->unsignedBigInteger('company_id');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onDelete('cascade');

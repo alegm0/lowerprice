@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\AddressClient;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -18,6 +20,7 @@ class AddressController extends Controller
     public function store(Request $request)
     {
        try {
+            $user = User::find($request->user_id);
             $validateData = Validator::make($request->all(), [
                 'user_id' => 'required|integer|exists:users,id',
                 'city_id' => 'required|integer|exists:cities,id',
@@ -29,8 +32,12 @@ class AddressController extends Controller
             if($validateData->fails()){
                 return response()->json($validateData->errors(), 403);
             }
-            $createAddress = $this->model::create($request->all());
-            return response()->json(['message' => 'Success operation', 'data' => $createAddress], 201);
+            $address = $this->model::create($request->all());
+            $user->address()->sync([
+                'user_id' => $request->user_id,
+                'address_id' => $address->id
+            ]);
+            return response()->json(['message' => 'Success operation', 'data' => $address], 201);
        } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
        }
@@ -40,6 +47,7 @@ class AddressController extends Controller
     {
         try {
             $validateData = Validator::make($request->all(), [
+                'user_id' => 'required|integer|exists:users,id',
                 'city_id' => 'required|integer|exists:cities,id',
                 'department_id' => 'required|integer|exists:departments,id',
                 'country_id' => 'required|integer|exists:countries,id',
@@ -57,29 +65,19 @@ class AddressController extends Controller
         }
     }
 
-    public function findByUser(string $userId)
+    public function delete(Request $request)
     {
         try {
-            if (!isset($userId)) {
-                return response()->json('Send the parameter', 403);
-            }
-            $data = $this->model::where('user_id', $userId)->get();
-            return response()->json(['message' => 'Success operation', 'data' => $data], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 401);
-        }
-    }
-
-    public function delete(string $id)
-    {
-        try {
-            $validateData = Validator::make(['id' => $id], [
-                'id' => 'required|integer|exists:addresses,id'
+            $validateData = Validator::make($request->all(), [
+                'address_id' => 'required|integer|exists:addresses,id',
+                'user_id' => 'required|integer|exists:users,id'
             ]);
             if ($validateData->fails()) {
                 return response()->json($validateData->errors(), 403);
             }
-            $this->model::findOrFail($id)->delete();
+            $address = $this->model::findOrFail($request->all()['address_id']);
+            $address->user()->detach();
+            $address->delete();
             return response()->json(['message' => 'Success operation', 'data' => 'OK'], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);

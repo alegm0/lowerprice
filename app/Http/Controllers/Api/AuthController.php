@@ -58,7 +58,8 @@ class AuthController extends Controller
                 return response()->json($validateData->errors(), 403);
             }
             $keys = array_keys($request->all());
-            if ($request->all()['role'] == 1) { //In case the user
+            if ($request->all()['role'] == "1") { //In case the user
+                unset($keys[5]);
                 unset($keys[4]);
                 $newUser = new User();
                 foreach ($keys as $value) {
@@ -71,6 +72,7 @@ class AuthController extends Controller
                 $newUser->save();
                 return response()->json(['message' => 'Success operation', 'data' => $newUser], 201);
             } else {
+                unset($keys[5]);
                 unset($keys[4]);
                 $newCompany = new Companies();
                 foreach ($keys as $value) {

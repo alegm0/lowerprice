@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Brands;
 use App\Models\Categories;
-use App\Models\Gender;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +16,7 @@ class ProductController extends Controller
 
     public function __construct()
     {
+        //$this->middleware('auth:api');
         $this->model = new Products();
         $this->modelCategory = new Categories();
         $this->modelBrand = new Brands();
@@ -41,11 +41,11 @@ class ProductController extends Controller
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], 400);
             } else {
-                if ($request->all()['category']['id'] == null) {
+                if ($request->all()['category']['id'] == null || $request->all()['category']['id'] == "0") {
                     $category = $this->modelCategory->create($request->all()['category']);
                 }
 
-                if ($request->all()['brand']['id'] == null) {
+                if ($request->all()['brand']['id'] == null || $request->all()['brand']['id'] == "0") {
                     $brands = $this->modelBrand->create($request->all()['brand']);
                 }
                 $newProduct = $this->model->create([

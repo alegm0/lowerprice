@@ -17,4 +17,9 @@ class Gender extends Model
      * @var array
      */
     protected $fillable = [ 'name', 'cade'];
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }
