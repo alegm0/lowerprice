@@ -5,26 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Brands extends Model
 {
     use HasFactory;
 
-    protected $table = 'categories';
+    protected $table = 'brands';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'user_id'];
-
-    public function User()
-    {
-        return $this->hasMany(User::class);
-    }
+    protected $fillable = [
+        'name',
+        'logo',
+        'state',
+        'description'
+    ];
 
     public function Product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(Products::class);
     }
 }

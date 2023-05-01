@@ -23,25 +23,11 @@ Route::group(['prefix' => '/auth'], function ($router) {
     Route::post('me', [\App\Http\Controllers\Api\AuthController::class, 'me'])->name('me');
 
     Route::group(['prefix' => '/product'], function($router) {
-        Route::post('/', [\App\Http\Controllers\Api\ProductController::class, 'store']);
-        Route::get('/list', [\App\Http\Controllers\Api\ProductController::class, 'getList']);
-        Route::get('/{id}', [\App\Http\Controllers\Api\ProductController::class, 'index']);
-        Route::put('/update/{id}', [\App\Http\Controllers\Api\ProductController::class, 'update']);
-        Route::delete('/delete/{id}', [\App\Http\Controllers\Api\ProductController::class, 'delete']);
-    });
-    Route::group(['prefix' => '/shopping-list'], function($router) {
-        Route::post('/', [\App\Http\Controllers\Api\ShoppingListController::class, 'store']);
-        Route::get('/list/{userId}', [\App\Http\Controllers\Api\ShoppingListController::class, 'getList']);
-        Route::get('/{id}', [\App\Http\Controllers\Api\ShoppingListController::class, 'index']);
-        Route::put('/{id}', [\App\Http\Controllers\Api\ShoppingListController::class, 'update']);
-        Route::delete('/{id}', [\App\Http\Controllers\Api\ShoppingListController::class, 'delete']);
-    });
-
-    Route::group(['prefix' => '/address'], function($router) {
-        Route::post('/', [\App\Http\Controllers\AddressController::class, 'store']);
-        Route::get('/{userId}', [\App\Http\Controllers\AddressController::class, 'findByUser']);
-        Route::put('/{id}', [\App\Http\Controllers\AddressController::class, 'update']);
-        Route::delete('/{id}', [\App\Http\Controllers\AddressController::class, 'delete']);
+        Route::post('/', [\App\Http\Controllers\ProductController::class, 'store']);
+        Route::get('/list', [\App\Http\Controllers\ProductController::class, 'getList']);
+        Route::get('/{id}', [\App\Http\Controllers\ProductController::class, 'findById']);
+        Route::put('/update/{id}', [\App\Http\Controllers\ProductController::class, 'update']);
+        Route::delete('/{id}', [\App\Http\Controllers\ProductController::class, 'delete']);
     });
 
     Route::group(['prefix' => '/utils'], function($router) {
@@ -51,24 +37,28 @@ Route::group(['prefix' => '/auth'], function ($router) {
         Route::get('/cities', [\App\Http\Controllers\CitiesController::class, 'find']);
     });
 
-    Route::group(['prefix' => '/discounts'], function($router) {
-        Route::post('/', [\App\Http\Controllers\DiscountsController::class, 'store']);
-        Route::get('/{userId}', [\App\Http\Controllers\DiscountsController::class, 'findByProduct']);
-        Route::put('/{id}', [\App\Http\Controllers\DiscountsController::class, 'update']);
-        Route::delete('/{id}', [\App\Http\Controllers\DiscountsController::class, 'delete']);
-    });
-
     Route::group(['prefix' => '/category'], function($router) {
-        Route::post('/', [\App\Http\Controllers\CategoryController::class, 'store']);
-        Route::get('/{userId}', [\App\Http\Controllers\CategoryController::class, 'findByUser']);
-        Route::put('/{id}', [\App\Http\Controllers\CategoryController::class, 'update']);
-        Route::delete('/{id}', [\App\Http\Controllers\CategoryController::class, 'delete']);
+        Route::get('/list', [\App\Http\Controllers\CategoriesController::class, 'getAll']);
     });
 
-    Route::group(['prefix' => '/mark'], function($router) {
-        Route::post('/', [\App\Http\Controllers\Api\MarkController::class, 'store']);
-        Route::get('/', [\App\Http\Controllers\Api\MarkController::class, 'getList']);
-        Route::put('/{id}', [\App\Http\Controllers\Api\MarkController::class, 'update']);
-        Route::delete('/{id}', [\App\Http\Controllers\Api\MarkController::class, 'delete']);
+    Route::group(['prefix' => '/brand'], function($router) {
+        Route::get('/list', [\App\Http\Controllers\BrandsController::class, 'getAll']);
+    });
+
+    Route::group(['prefix' => '/company'], function($router) {
+        Route::put('/update/{id}', [\App\Http\Controllers\CompaniesController::class, 'update']);
+        Route::get('/{id}', [\App\Http\Controllers\CompaniesController::class, 'find']);
+        Route::post('/payment-methods', [\App\Http\Controllers\CompaniesController::class, 'storePaymentMethod']);
+    });
+
+    Route::group(['prefix' => '/user'], function($router) {
+        Route::put('/update/{id}', [\App\Http\Controllers\UserController::class, 'update']);
+        Route::get('/{id}', [\App\Http\Controllers\UserController::class, 'find']);
+        Route::group(['prefix' => '/address'], function($router) {
+            Route::post('/', [\App\Http\Controllers\AddressController::class, 'store']);
+            Route::get('/{userId}', [\App\Http\Controllers\AddressController::class, 'findByUser']);
+            Route::put('/update/{id}', [\App\Http\Controllers\AddressController::class, 'update']);
+            Route::delete('/delete', [\App\Http\Controllers\AddressController::class, 'delete']);
+        });
     });
 });

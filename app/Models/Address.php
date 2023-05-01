@@ -16,25 +16,31 @@ class Address extends Model
      *
      * @var array
      */
-    protected $fillable = ['description', 'postal_code', 'city_id', 'country_id', 'department_id', 'sector', 'name', 'user_id'];
+    protected $fillable = [
+        'postal_code',
+        'city_id',
+        'country_id',
+        'department_id',
+        'name'
+    ];
 
     public function Department()
     {
-        return $this->hasMany(Departments::class);
+        return $this->belongsTo(Departments::class);
     }
 
     public function City()
     {
-        return $this->hasMany(Cities::class);
+        return $this->belongsTo(Cities::class);
     }
 
     public function Country()
     {
-        return $this->hasMany(Countries::class);
+        return $this->belongsTo(Countries::class);
     }
 
     public function user()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class, 'address_clients', 'address_id', 'user_id');
     }
 }

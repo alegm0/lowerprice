@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DocumentType extends Model
+class Gender extends Model
 {
     use HasFactory;
 
-    protected $table = 'document_types';
+    protected $table = 'genders';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['description', 'name'];
+    protected $fillable = [ 'name', 'cade'];
 
     public function user()
     {

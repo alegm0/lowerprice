@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShoppingListTable extends Migration
+class CreateShoppingListsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,14 @@ class CreateShoppingListTable extends Migration
      */
     public function up()
     {
-        Schema::create('shopping_list', function (Blueprint $table) {
+        Schema::create('shopping_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('list_name');
-            $table->unsignedBigInteger('mark_id');
-            $table->string('mark_name');
-            $table->unsignedBigInteger('product_id');
-            $table->string('product_name');
+            $table->string('name_list');
+            $table->date('start_date');
+            $table->boolean('is_active')->default(true);
+            $table->float('estimated_price');
             $table->unsignedBigInteger('user_id');
-            $table->string('supermarket');
-            $table->integer('amount');
-            $table->foreign('mark_id')->references('id')->on('marks')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
             $table->timestamps();
         });
     }

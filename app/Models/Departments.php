@@ -27,4 +27,9 @@ class Departments extends Model
     {
         return $this->belongsTo(Cities::class);
     }
+
+    public function address()
+    {
+        return $this->hasMany(Address::class);
+    }
 }
