@@ -16,7 +16,13 @@ class DocumentType extends Model
      *
      * @var array
      */
-    protected $fillable = ['description', 'name'];
+    protected $fillable = ['id', 'description', 'name'];
+
+    protected $casts = [
+        'id' => 'string',
+        'description' => 'string',
+        'name' => 'string',
+    ];
 
     public function user()
     {

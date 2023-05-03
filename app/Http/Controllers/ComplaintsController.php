@@ -22,8 +22,8 @@ class ComplaintsController extends Controller
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string',
                 'text' => 'required|string',
-                'user_id' => 'nullable|integer|exists:users,id',
-                'company_id' => 'nullable|integer|exists:companies,id',
+                'user_id' => 'required|integer|exists:users,id',
+                'company_id' => 'required|integer|exists:companies,id',
             ]);
 
             if ($validator->fails()) {

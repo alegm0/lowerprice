@@ -80,6 +80,10 @@ class CompaniesController extends Controller
             $data = $this->model::with('paymentMethods')->findOrFail($request[0]['company_id']);
             return response()->json(['message' => 'Success operation', 'data' => $data], 201);
         }
+    }
 
+    public function getAll()
+    {
+        return  $this->model::all();
     }
 }
