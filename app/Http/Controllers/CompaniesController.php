@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Companies;
+use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -54,7 +55,7 @@ class CompaniesController extends Controller
             if (!isset($id)) {
                 return response()->json('Send the parameter', 403);
             }
-            $data = $this->model::findOrFail($id);
+            $data = $this->model::with('paymentMethods')->findOrFail($id);
             return response()->json(['message' => 'Success operation', 'data' => $data], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
@@ -80,6 +81,15 @@ class CompaniesController extends Controller
             $data = $this->model::with('paymentMethods')->findOrFail($request[0]['company_id']);
             return response()->json(['message' => 'Success operation', 'data' => $data], 201);
         }
+    }
+
+    public function deletePaymentMethod(string $id)
+    {
+        $company = Companies::findOrFail(1);
+        $paymentMethod = PaymentMethod::findOrFail($id);
+
+        $company->paymentMethods()->detach($paymentMethod->id);
+        return response()->json(['message' => 'Success operation', 'data' => 'Ok'], 201);
     }
 
     public function getAll()

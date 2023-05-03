@@ -21,7 +21,8 @@ class Address extends Model
         'city_id',
         'country_id',
         'department_id',
-        'name'
+        'name',
+        'user_id'
     ];
 
     public function Department()
@@ -41,6 +42,6 @@ class Address extends Model
 
     public function user()
     {
-        return $this->belongsToMany(User::class, 'address_clients', 'address_id', 'user_id');
+        return $this->belongsTo(User::class);
     }
 }

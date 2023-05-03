@@ -33,10 +33,6 @@ class AddressController extends Controller
                 return response()->json($validateData->errors(), 403);
             }
             $address = $this->model::create($request->all());
-            $user->address()->sync([
-                'user_id' => $request->user_id,
-                'address_id' => $address->id
-            ]);
             return response()->json(['message' => 'Success operation', 'data' => $address], 201);
        } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
@@ -65,19 +61,16 @@ class AddressController extends Controller
         }
     }
 
-    public function delete(Request $request)
+    public function delete(string $id)
     {
         try {
-            $validateData = Validator::make($request->all(), [
-                'address_id' => 'required|integer|exists:addresses,id',
-                'user_id' => 'required|integer|exists:users,id'
+            $validateData = Validator::make(['id' => $id], [
+                'id' => 'required|exists:addresses,id'
             ]);
             if ($validateData->fails()) {
                 return response()->json($validateData->errors(), 403);
             }
-            $address = $this->model::findOrFail($request->all()['address_id']);
-            $address->user()->detach();
-            $address->delete();
+            $this->model::findOrFail($id)->delete();
             return response()->json(['message' => 'Success operation', 'data' => 'OK'], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);

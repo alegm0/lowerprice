@@ -35,6 +35,7 @@ Route::group(['prefix' => '/auth'], function ($router) {
         Route::get('/departments', [\App\Http\Controllers\DepartmentsController::class, 'find']);
         Route::get('/countries', [\App\Http\Controllers\CountriesController::class, 'find']);
         Route::get('/cities', [\App\Http\Controllers\CitiesController::class, 'find']);
+        Route::get('/payment-method', [\App\Http\Controllers\PaymentMethodController::class, 'find']);
     });
 
     Route::group(['prefix' => '/category'], function($router) {
@@ -50,6 +51,7 @@ Route::group(['prefix' => '/auth'], function ($router) {
         Route::put('/update/{id}', [\App\Http\Controllers\CompaniesController::class, 'update']);
         Route::get('/{id}', [\App\Http\Controllers\CompaniesController::class, 'find']);
         Route::post('/payment-methods', [\App\Http\Controllers\CompaniesController::class, 'storePaymentMethod']);
+        Route::delete('/payment-methods/{id}', [\App\Http\Controllers\CompaniesController::class, 'deletePaymentMethod']);
     });
 
     Route::group(['prefix' => '/user'], function($router) {
@@ -59,7 +61,7 @@ Route::group(['prefix' => '/auth'], function ($router) {
             Route::post('/', [\App\Http\Controllers\AddressController::class, 'store']);
             Route::get('/{userId}', [\App\Http\Controllers\AddressController::class, 'findByUser']);
             Route::put('/update/{id}', [\App\Http\Controllers\AddressController::class, 'update']);
-            Route::delete('/delete', [\App\Http\Controllers\AddressController::class, 'delete']);
+            Route::delete('/delete/{id}', [\App\Http\Controllers\AddressController::class, 'delete']);
         });
     });
 
