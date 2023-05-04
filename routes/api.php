@@ -73,6 +73,7 @@ Route::group(['prefix' => '/auth'], function ($router) {
 
     Route::group(['prefix' => '/discount-promotions'], function($router) {
         Route::post('/', [\App\Http\Controllers\DiscountPromotionsController::class, 'store']);
+        Route::get('/specific/{id}', [\App\Http\Controllers\DiscountPromotionsController::class, 'getById']);
         Route::get('/', [\App\Http\Controllers\DiscountPromotionsController::class, 'getAll']);
         Route::put('/{userId}', [\App\Http\Controllers\DiscountPromotionsController::class, 'update']);
         Route::delete('/delete/{id}', [\App\Http\Controllers\DiscountPromotionsController::class, 'delete']);

@@ -84,4 +84,14 @@ class DiscountPromotionsController extends Controller
             return response()->json(['message' => $e->getMessage()], 401);
         }
     }
+
+    public function getById(string $id)
+    {
+        try {
+            $data = $this->model::findOrFail($id);
+            return response()->json(['message' => 'Success operation', 'data' => $data], 201);
+        } catch (\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 401);
+        }
+    }
 }
