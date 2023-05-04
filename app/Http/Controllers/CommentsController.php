@@ -20,12 +20,11 @@ class CommentsController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required',
                 'name_user' => 'required',
                 'assessment' => 'required|integer|min:1|max:5',
                 'start_date' => 'required',
                 'title' => 'required|string',
-                'text' => 'required|string',
+                'text' => 'nullable|string',
                 'contact_information' => 'required|string',
                 'product_id' => 'required|exists:products,id',
             ]);
