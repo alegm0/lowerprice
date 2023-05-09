@@ -8,6 +8,7 @@ use App\Models\Companies;
 use App\Models\PasswordReset;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -70,6 +71,7 @@ class AuthController extends Controller
                     $newUser->$value = $request[$value];
                 }
                 $newUser->save();
+                $newUser->createToken('Token')->accessToken;
                 return response()->json(['message' => 'Success operation', 'data' => $newUser], 201);
             } else {
                 unset($keys[5]);
@@ -83,6 +85,7 @@ class AuthController extends Controller
                     $newCompany->$value = $request[$value];
                 }
                 $newCompany->save();
+                $newCompany->createToken('Token')->accessToken;
                 return response()->json(['message' => 'Success operation', 'data' => $newCompany], 201);
             }
 
