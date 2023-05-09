@@ -39,11 +39,15 @@ class AuthController extends Controller
         if ($validateData->fails()) {
             return response()->json($validateData->errors(), 403);
         }
-        $token = auth()->attempt($request->all());
-        if (!$token) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+        $tokenCompany = Auth::guard('companies')->attempt($request->all());
+        if (!$tokenCompany) {
+            $tokenUser= Auth::guard('users')->attempt($request->all());
+            if (!$tokenUser) {
+                return response()->json(['message' => 'Unauthorized'], 401);
+            }
+            return $this->respondWithToken($tokenUser);
         }
-        return $this->respondWithToken($token);
+        return $this->respondWithToken($tokenCompany);
     }
 
     public function register(Request $request){
