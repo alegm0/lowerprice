@@ -28,6 +28,7 @@ Route::group(['prefix' => '/auth'], function ($router) {
         Route::get('/{id}', [\App\Http\Controllers\ProductController::class, 'findById']);
         Route::put('/update/{id}', [\App\Http\Controllers\ProductController::class, 'update']);
         Route::delete('/{id}', [\App\Http\Controllers\ProductController::class, 'delete']);
+        Route::post('/comparison-list', [\App\Http\Controllers\ProductController::class, 'storeProductByApi']);
     });
 
     Route::group(['prefix' => '/utils'], function($router) {
@@ -84,5 +85,10 @@ Route::group(['prefix' => '/auth'], function ($router) {
         Route::get('/all/{productId}', [\App\Http\Controllers\CommentsController::class, 'getAllByProduct']);
         Route::put('/{userId}', [\App\Http\Controllers\CommentsController::class, 'update']);
         Route::delete('/delete/{id}', [\App\Http\Controllers\CommentsController::class, 'delete']);
+    });
+
+    Route::group(['prefix' => '/comparison-list'], function($router) {
+        Route::post('/', [\App\Http\Controllers\ShoppingListController::class, 'store']);
+        Route::post('/report', [\App\Http\Controllers\ShoppingListController::class, 'getReport']);
     });
 });

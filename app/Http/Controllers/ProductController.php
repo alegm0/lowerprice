@@ -63,6 +63,34 @@ class ProductController extends Controller
         }
     }
 
+    public function storeProductByApi(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'unit_cost' => 'required|numeric|min:0',
+                'description' => 'nullable|string',
+                'category_identifier' => 'required|string|exists:categories,identifier',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 400);
+            } else {
+                $category = Categories::where('identifier', $request->all()['category_identifier'])->first();
+                $newProduct = $this->model->create([
+                    'name' => $request->all()['name'],
+                    'unit_cost' => $request->all()['unit_cost'],
+                    'description' => $request->all()['description'],
+                    'category_id' => $category->id
+                ]);
+                
+                return response()->json(['message' => 'Success operation', 'data' => $newProduct], 201);
+            }
+        } catch (\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 401);
+        }
+    }
+
     public function findById(string $id)
     {
         try {
