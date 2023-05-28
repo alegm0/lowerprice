@@ -96,4 +96,9 @@ class CompaniesController extends Controller
     {
         return  $this->model::all();
     }
+
+    public function getAllCompanyByAddress()
+    {
+        return $this->model::get();
+    }
 }

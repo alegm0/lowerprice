@@ -17,7 +17,7 @@ class CreateCompaniesTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('document_number')->unique();
-            $table->integer('phone')->nullable();
+            $table->bigInteger('phone')->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->string('website')->nullable();

@@ -48,6 +48,7 @@ Route::group(['prefix' => '/auth'], function ($router) {
     });
 
     Route::group(['prefix' => '/company'], function($router) {
+        Route::get('/address', [\App\Http\Controllers\CompaniesController::class, 'getAllCompanyByAddress']);
         Route::get('/all', [\App\Http\Controllers\CompaniesController::class, 'getAll']);
         Route::put('/update/{id}', [\App\Http\Controllers\CompaniesController::class, 'update']);
         Route::get('/{id}', [\App\Http\Controllers\CompaniesController::class, 'find']);
