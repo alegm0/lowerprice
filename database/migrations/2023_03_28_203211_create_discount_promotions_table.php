@@ -18,10 +18,12 @@ class CreateDiscountPromotionsTable extends Migration
             $table->date('start_date');
             $table->date('finish_date');
             $table->float('value');
-            $table->string('conditions');
+            $table->string('conditions')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -24,7 +24,7 @@ Route::group(['prefix' => '/auth'], function ($router) {
 
     Route::group(['prefix' => '/product'], function($router) {
         Route::post('/', [\App\Http\Controllers\ProductController::class, 'store']);
-        Route::get('/list', [\App\Http\Controllers\ProductController::class, 'getList']);
+        Route::get('/list/{id}', [\App\Http\Controllers\ProductController::class, 'getList']);
         Route::get('/{id}', [\App\Http\Controllers\ProductController::class, 'findById']);
         Route::put('/update/{id}', [\App\Http\Controllers\ProductController::class, 'update']);
         Route::delete('/{id}', [\App\Http\Controllers\ProductController::class, 'delete']);
@@ -76,7 +76,7 @@ Route::group(['prefix' => '/auth'], function ($router) {
     Route::group(['prefix' => '/discount-promotions'], function($router) {
         Route::post('/', [\App\Http\Controllers\DiscountPromotionsController::class, 'store']);
         Route::get('/specific/{id}', [\App\Http\Controllers\DiscountPromotionsController::class, 'getById']);
-        Route::get('/', [\App\Http\Controllers\DiscountPromotionsController::class, 'getAll']);
+        Route::get('/{companyId}', [\App\Http\Controllers\DiscountPromotionsController::class, 'getAll']);
         Route::put('/{userId}', [\App\Http\Controllers\DiscountPromotionsController::class, 'update']);
         Route::delete('/delete/{id}', [\App\Http\Controllers\DiscountPromotionsController::class, 'delete']);
     });

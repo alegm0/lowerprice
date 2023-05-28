@@ -22,6 +22,12 @@ class DiscountPromotions extends Model
         'value',
         'conditions',
         'is_active',
-        'product_id'
+        'product_id',
+        'company_id'
     ];
+
+    public function Companies()
+    {
+        return $this->belongsTo(Companies::class);
+    }
 }

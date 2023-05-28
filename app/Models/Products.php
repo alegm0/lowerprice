@@ -21,7 +21,8 @@ class Products extends Model
         'description',
         'unit_cost',
         'brand_id',
-        'category_id'
+        'category_id',
+        'creator_id',
     ];
 
     protected $casts = [
@@ -29,7 +30,8 @@ class Products extends Model
         'description' => 'string',
         'unit_cost' => 'double',
         'brand_id' => 'integer',
-        'category_id' => 'integer'
+        'category_id' => 'integer',
+        'creator_id' => 'integer'
     ];
 
     public function Category()

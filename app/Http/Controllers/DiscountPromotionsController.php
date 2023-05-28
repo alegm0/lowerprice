@@ -23,8 +23,9 @@ class DiscountPromotionsController extends Controller
                 'start_date' => 'required',
                 'finish_date' => 'required',
                 'value' => 'required',
-                'conditions' => 'required|nullable',
+                'conditions' => 'nullable',
                 'product_id' => 'required|exists:products,id',
+                'company_id' => 'required|exists:companies,id',
             ]);
 
             if ($validator->fails()) {
@@ -46,6 +47,7 @@ class DiscountPromotionsController extends Controller
                 'value' => 'required',
                 'conditions' => 'required',
                 'product_id' => 'required|exists:products,id',
+                'company_id' => 'required|exists:companies,id',
             ]);
 
             if ($validator->fails()) {
@@ -75,10 +77,10 @@ class DiscountPromotionsController extends Controller
         }
     }
 
-    public function getAll()
+    public function getAll(string $companyId)
     {
         try {
-            $data = $this->model::all();
+            $data = $this->model::where('company_id', $companyId)->get();
             return response()->json(['message' => 'Success operation', 'data' => $data], 201);
         } catch (\Exception $e){
             return response()->json(['message' => $e->getMessage()], 401);

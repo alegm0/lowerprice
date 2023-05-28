@@ -29,6 +29,7 @@ class ProductController extends Controller
                 'name' => 'required|string|max:255',
                 'unit_cost' => 'required|numeric|min:0',
                 'description' => 'nullable|string',
+                'creator_id' => 'required|integer',
                 'category.id' => 'nullable|integer|exists:categories,id',
                 'category.name' => 'required|string|max:255',
                 'category.description' => 'nullable|string',
@@ -49,6 +50,7 @@ class ProductController extends Controller
                     $brands = $this->modelBrand->create($request->all()['brand']);
                 }
                 $newProduct = $this->model->create([
+                    'creator_id' => $request->all()['creator_id'],
                     'name' => $request->all()['name'],
                     'unit_cost' => $request->all()['unit_cost'],
                     'description' => $request->all()['description'],
@@ -70,6 +72,7 @@ class ProductController extends Controller
                 'name' => 'required|string|max:255',
                 'unit_cost' => 'required|numeric|min:0',
                 'description' => 'nullable|string',
+                'creator_id' => 'required|integer',
                 'category_identifier' => 'required|string|exists:categories,identifier',
             ]);
 
@@ -83,7 +86,7 @@ class ProductController extends Controller
                     'description' => $request->all()['description'],
                     'category_id' => $category->id
                 ]);
-                
+
                 return response()->json(['message' => 'Success operation', 'data' => $newProduct], 201);
             }
         } catch (\Exception $e){
@@ -107,10 +110,10 @@ class ProductController extends Controller
         }
     }
 
-    public function getList()
+    public function getList(string $id)
     {
         try {
-            $products = $this->model::all();
+            $products = $this->model::where('creator_id', $id)->get();
             return response()->json(
                 [
                     'message' => 'Success operation',
@@ -129,6 +132,7 @@ class ProductController extends Controller
                 'name' => 'required|string|max:255',
                 'unit_cost' => 'required|numeric|min:0',
                 'description' => 'nullable|string',
+                'creator_id' => 'required|integer',
                 'category.id' => 'nullable|integer|exists:categories,id',
                 'category.name' => 'required|string|max:255',
                 'category.description' => 'nullable|string',

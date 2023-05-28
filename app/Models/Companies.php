@@ -90,4 +90,9 @@ class Companies extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(PaymentMethod::class, 'companies_payment_methods', 'company_id', 'payment_method_id');
     }
+
+    public function Discount()
+    {
+        return $this->hasMany(DiscountPromotions::class);
+    }
 }
