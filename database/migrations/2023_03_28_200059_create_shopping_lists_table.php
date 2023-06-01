@@ -15,10 +15,10 @@ class CreateShoppingListsTable extends Migration
     {
         Schema::create('shopping_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('name_list');
+            $table->string('name_list')->nullable();
             $table->date('start_date');
             $table->boolean('is_active')->default(true);
-            $table->float('estimated_price');
+            $table->float('estimated_price')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

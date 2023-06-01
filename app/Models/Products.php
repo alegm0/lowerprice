@@ -23,6 +23,8 @@ class Products extends Model
         'brand_id',
         'category_id',
         'creator_id',
+        'type',
+        'id_api'
     ];
 
     protected $casts = [
@@ -31,7 +33,9 @@ class Products extends Model
         'unit_cost' => 'double',
         'brand_id' => 'integer',
         'category_id' => 'integer',
-        'creator_id' => 'integer'
+        'creator_id' => 'integer',
+        'type' => 'string',
+        'id_api' => 'string'
     ];
 
     public function Category()
@@ -42,5 +46,10 @@ class Products extends Model
     public function Brand()
     {
         return $this->belongsTo(Brands::class);
+    }
+
+    public function ShoppingListsProducts()
+    {
+        return $this->hasMany(ShoppingListsProducts::class);
     }
 }

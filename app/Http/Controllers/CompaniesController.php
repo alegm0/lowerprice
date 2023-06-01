@@ -99,6 +99,6 @@ class CompaniesController extends Controller
 
     public function getAllCompanyByAddress()
     {
-        return $this->model::get();
+        return response()->json(['message' => 'Success operation', 'data' => $this->model::get()], 201);
     }
 }

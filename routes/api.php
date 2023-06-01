@@ -23,12 +23,14 @@ Route::group(['prefix' => '/auth'], function ($router) {
     Route::post('me', [\App\Http\Controllers\Api\AuthController::class, 'me'])->name('me');
 
     Route::group(['prefix' => '/product'], function($router) {
+        Route::post('/comparison-list/creator', [\App\Http\Controllers\ProductController::class, 'storeProductShoppingList']);
+        Route::post('/comparison-list', [\App\Http\Controllers\ProductController::class, 'storeProductByApi']);
+        Route::get('/list-product/{id}/{type}', [\App\Http\Controllers\ProductController::class, 'getProductsByCompanies']);
         Route::post('/', [\App\Http\Controllers\ProductController::class, 'store']);
-        Route::get('/list/{id}', [\App\Http\Controllers\ProductController::class, 'getList']);
+        Route::get('/list/{id}/{type}', [\App\Http\Controllers\ProductController::class, 'getList']);
         Route::get('/{id}', [\App\Http\Controllers\ProductController::class, 'findById']);
         Route::put('/update/{id}', [\App\Http\Controllers\ProductController::class, 'update']);
         Route::delete('/{id}', [\App\Http\Controllers\ProductController::class, 'delete']);
-        Route::post('/comparison-list', [\App\Http\Controllers\ProductController::class, 'storeProductByApi']);
     });
 
     Route::group(['prefix' => '/utils'], function($router) {
@@ -89,7 +91,14 @@ Route::group(['prefix' => '/auth'], function ($router) {
     });
 
     Route::group(['prefix' => '/comparison-list'], function($router) {
-        Route::post('/', [\App\Http\Controllers\ShoppingListController::class, 'store']);
-        Route::post('/report', [\App\Http\Controllers\ShoppingListController::class, 'getReport']);
+        Route::get('/{userId}', [\App\Http\Controllers\ShoppingListController::class, 'getByUser']);
+        Route::get('/report/{userId}', [\App\Http\Controllers\ShoppingListController::class, 'getListReport']);
+        Route::put('/update-list/{id}/{isUpdateProduct}', [\App\Http\Controllers\ShoppingListController::class, 'updateList']);
+        Route::put('/update-product/{id}/{isUpdateProduct}', [\App\Http\Controllers\ShoppingListController::class, 'updateList']);
     });
+
+    Route::group(['prefix' => '/shopping-lists-products'], function($router) {
+        Route::delete('/{id}', [\App\Http\Controllers\ShoppingListsProductsController::class, 'deleteProducts']);
+    });
+
 });

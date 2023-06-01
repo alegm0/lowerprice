@@ -15,7 +15,8 @@ class CreateShoppingListsProductsTable extends Migration
     {
         Schema::create('shopping_lists_products', function (Blueprint $table) {
             $table->id();
-            $table->integer('quantity');
+            $table->bigInteger('quantity');
+            $table->bigInteger('total_cost');
             $table->unsignedBigInteger('shopping_list_id');
             $table->unsignedBigInteger('product_id');
             $table->foreign('shopping_list_id')->references('id')->on('shopping_lists')->onDelete('cascade');
