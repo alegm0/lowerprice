@@ -39,25 +39,34 @@ class AuthController extends Controller
         if ($validateData->fails()) {
             return response()->json($validateData->errors(), 403);
         }
-        $tokenCompany = Auth::guard('companies')->attempt($request->all());
-        if (!$tokenCompany) {
-            $tokenUser= Auth::guard('users')->attempt($request->all());
-            if (!$tokenUser) {
-                return response()->json(['message' => 'Unauthorized'], 401);
-            }
-            $user = User::where('email', $request->all()['email'])->first();
-            return response()->json([
-                'access_token' => $tokenUser,
-                'role' => 1,
-                'id' => $user->id
-            ]);
-        }
         $company = Companies::where('email', $request->all()['email'])->first();
-        return response()->json([
-            'access_token' => $tokenCompany,
-            'role' => 2,
-            'id' => $company->id
-        ]);
+        $user = User::where('email', $request->all()['email'])->first();
+        if (isset($user)) {
+            if ($user && password_verify($request->all()['password'], $user->password)) {
+                $length = 32; // Longitud deseada del token
+                $token = bin2hex(random_bytes($length / 2));
+                return response()->json([
+                    'access_token' => $token,
+                    'role' => 2,
+                    'id' => $user->id
+                ]);
+            }
+        } else if (!isset($user)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        if (isset($company)) {
+            if ($company && password_verify($request->all()['password'], $company->password)) {
+                $length = 32; // Longitud deseada del token
+                $token = bin2hex(random_bytes($length / 2));
+                return response()->json([
+                    'access_token' => $token,
+                    'role' => 2,
+                    'id' => $company->id
+                ]);
+            }
+        }else if (!isset($company)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
     }
 
 
